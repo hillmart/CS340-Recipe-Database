@@ -17,7 +17,7 @@ CREATE TABLE ingredients(
 CREATE TABLE users(
     userID int(11) NOT NULL AUTO_INCREMENT,
     email varchar(255) NOT NULL,
-    restrictionID int(11) NOT NULL,
+    restrictionID int(11),
     PRIMARY KEY (userID),
     FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID)
 );
@@ -26,7 +26,7 @@ CREATE TABLE recipes(
     recipeID int(11) NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     servings int(11) NOT NULL,
-    restrictionID int(11) NOT NULL,
+    restrictionID int(11),
     PRIMARY KEY (recipeID),
     FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID)
 );
