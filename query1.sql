@@ -2,33 +2,33 @@
 -- DROP TABLE userRecipes, ingredientsInRecipes, users, recipes, ingredients, dietaryRestrictions;
 
 CREATE TABLE dietaryRestrictions(
-    restrictionID int(11) NOT NULL AUTO_INCREMENT,
+    id int(11) NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
-    PRIMARY KEY (restrictionID)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE ingredients(
-    ingredientID int(11) NOT NULL AUTO_INCREMENT,
+    id int(11) NOT NULL AUTO_INCREMENT,
     price int(11) NOT NULL,
     name varchar(255) NOT NULL,
-    PRIMARY KEY (ingredientID)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE users(
-    userID int(11) NOT NULL AUTO_INCREMENT,
+    id int(11) NOT NULL AUTO_INCREMENT,
     email varchar(255) NOT NULL,
     restrictionID int(11),
-    PRIMARY KEY (userID),
-    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID)
+    PRIMARY KEY (id),
+    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(id)
 );
 
 CREATE TABLE recipes(
-    recipeID int(11) NOT NULL AUTO_INCREMENT,
+    id int(11) NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     servings int(11) NOT NULL,
     restrictionID int(11),
-    PRIMARY KEY (recipeID),
-    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID)
+    PRIMARY KEY (id),
+    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(id)
 );
 
 CREATE TABLE userRecipes(
@@ -36,8 +36,8 @@ CREATE TABLE userRecipes(
   recipeID int(11) NOT NULL,
   dateAdded DATE NOT NULL,
   PRIMARY KEY (userID, recipeID),
-  FOREIGN KEY (userID) REFERENCES users(userID),
-  FOREIGN KEY (recipeID) REFERENCES recipes(recipeID)
+  FOREIGN KEY (userID) REFERENCES users(id),
+  FOREIGN KEY (recipeID) REFERENCES recipes(id)
 );
 
 CREATE TABLE ingredientsInRecipes(
@@ -46,8 +46,8 @@ CREATE TABLE ingredientsInRecipes(
   quantity int(11) NOT NULL,
   units varchar(255) NOT NULL,
   PRIMARY KEY (ingredientID, recipeID),
-  FOREIGN KEY (ingredientID) REFERENCES ingredients(ingredientID),
-  FOREIGN KEY (recipeID) REFERENCES recipes(recipeID)
+  FOREIGN KEY (ingredientID) REFERENCES ingredients(id),
+  FOREIGN KEY (recipeID) REFERENCES recipes(id)
 );
 
 -- Test that the tables were created.
