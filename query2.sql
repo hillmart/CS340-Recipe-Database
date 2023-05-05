@@ -1,33 +1,51 @@
 -- Queries to insert data
-INSERT INTO users (userID, email, restrictionID) 
+INSERT INTO dietaryRestrictions (name) 
 VALUES 
-('1', 'user1@gmail.com', '1'),
-('2', 'user2@gmail.com', '2'),
-('3', 'user3@gmail.com', '3');
+('Vegetarian'),
+('Gluten-free'),
+('Vegan');
 
-INSERT INTO recipes (recipeID, name, servings, restrictionID) 
+INSERT INTO users (email, restrictionID) 
 VALUES 
-('1', 'Pasta', '4', '1'),
-('2', 'Pizza', '2', '2'),
-('3', 'Salad', '3', '1');
+('john.doe@example.com', (SELECT id from dietaryRestrictions where name = 'Vegetarian')),
+('jane.smith@example.com', (SELECT id from dietaryRestrictions where name = 'Gluten-free')),
+('mark.jones@example.com', (SELECT id from dietaryRestrictions where name = 'Vegan')),
+('emma.taylor@example.com', (SELECT id from dietaryRestrictions where name = 'Vegetarian')),
+('will.brown@example.com', (SELECT id from dietaryRestrictions where name = 'Gluten-free'));
 
-INSERT INTO ingredients (ingredientID, price, name) 
+INSERT INTO recipes (name, servings, restrictionID) 
 VALUES 
-('1', '10', 'cheese'),
-('2', '1', 'tomatoes'),
-('3', '5', 'dough');
+('Tomato Soup', '4', (SELECT id from dietaryRestrictions where name = 'Vegetarian')),
+('Grilled Chicken', '2', NULL),
+('Vegan Tacos', '4', (SELECT id from dietaryRestrictions where name = 'Vegan')),
+('Gluten-free Pasta', '4', (SELECT id from dietaryRestrictions where name = 'Gluten-free')),
+('Garden Salad', '2', (SELECT id from dietaryRestrictions where name = 'Vegetarian'));
 
-INSERT INTO dietaryRestrictions (restrictionID, name) 
+INSERT INTO ingredients (price, name) 
 VALUES 
-('1', 'gluten-free'),
-('2', 'vegetarian'),
-('3', 'keto');
+('1', 'Tomatoes'),
+('2', 'Chicken'),
+('1', 'Lettuce'),
+('3', 'Vegan Cheese'),
+('1', 'Gluten-free Noodles');
 
 INSERT INTO userRecipes (userID, recipeID, dateAdded) 
 VALUES 
-('1', '1', '2023-05-02'),
-('1', '2', '2023-05-03'),
-('2', '1', '2023-05-04');
+((SELECT id from users where email = 'john.doe@example.com'),
+ (SELECT id from recipes where name = 'Tomato Soup'),
+ '2023-04-01'),
+((SELECT id from users where email = 'jane.smith@example.com'),
+ (SELECT id from recipes where name = 'Grilled Chicken'),
+ '2023-04-05'),
+((SELECT id from users where email = 'mark.jones@example.com'),
+ (SELECT id from recipes where name = 'Vegan Tacos'),
+ '2023-04-10'),
+((SELECT id from users where email = 'emma.taylor@example.com'),
+ (SELECT id from recipes where name = 'Gluten-free Pasta'),
+ '2023-04-15'),
+((SELECT id from users where email = 'will.brown@example.com'),
+ (SELECT id from recipes where name = 'Garden Salad'),
+ '2023-04-20');
 
 INSERT INTO ingredientsInRecipes (ingredientID, recipeID, quantity, units) 
 VALUES 
