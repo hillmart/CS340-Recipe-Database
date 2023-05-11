@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Recipes Database</title>
+    <meta />
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <h1> Recipes</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="users.html">Users</a>
+        <a href="recipes.html">Recipes</a>
+        <a href="ingredients.html">Ingredients</a>
+        <a href="dietaryRestrictions.html">Dietary Restrictions</a>
+        <a href="userRecipes.html">User Recipes</a>
+        <a href="recipeIngredients.html">Recipe Ingredients</a>
+    </nav>
+    <div id="browse" style="display: block">
+        <p><strong>Browse Users</strong></p>
+        <table border="1" cellpadding="5">
+          <tr>
+            <th><a href="#">New</a></th>
+            <th></th>
+            <th>recipeId</th>
+            <th>name</th>
+            <th>servings</th>
+            <th>restrictionId</th>
+          </tr>
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >1</td>
+            <td >Tomato Soup</td>
+            <td align="right" >4</td>
+            <td align="right" >1</td>
+          </tr>
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >2</td>
+            <td >Grilled Chicken</td>
+            <td align="right" >2</td>
+            <td align="right" >NULL</td>
+          </tr>          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >3</td>
+            <td >Vegan Tacos</td>
+            <td align="right" >4</td>
+            <td align="right" >3</td>
+          </tr>          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >4</td>
+            <td >Glute-Free Pasta</td>
+            <td align="right" >4</td>
+            <td align="right" >2</td>
+          </tr>          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >5</td>
+            <td >Garden Salad</td>
+            <td align="right" >2</td>
+            <td align="right" >1</td>
+          </tr>
+        </table>
+        <p>&nbsp;</p>
+        </div> <!-- browse -->
+        <div id="insert" style="display: block">
+            <form id="addRecipe">
+                <legend><strong>Add Recipe</strong></legend>
+                  <fieldset class="fields">
+                    <label> Name </label> <input type="text" name="name">
+                    <label> Servings </label> <input type="text" name="servings">
+                    <label for="restriction">Dietary restriction </label> 
+                    <select name="restriction">
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Gluten Free">Gluten Free</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+                  </fieldset>
+                  <input class="btn" type="submit" id="addRecipe" value="Add a Recipe">
+                  <input class="btn" type="button" value="cancel">
+            </form> <!--add new recipe-->
+        </div><!-- insert -->
+        
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+          <form id="updateUser">
+              <legend><strong>Update User</strong></legend>
+                  <fieldset class="fields">
+                  <label>ID:</label> 1
+                  <label> Name </label> <input type="text" name="name" value="Tomato Soup">
+                  <label> Servings </label> <input type="text" name="servings" value="4">
+                    <label for="restriction">Dietary restriction </label> 
+                    <select name="restriction">
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Gluten Free">Gluten Free</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+            </fieldset>
+            <input class="btn" type="submit" id="UpdateSaveRecipe" value="Save Update Recipe">
+                  <input class="btn" type="button" value="cancel" >
+          </form> 
+        </div><!-- update -->
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+          <form id="deleteRecipe">
+              <legend><strong>Delete Recipe</strong></legend>
+                  <fieldset class="fields">
+                  <p>Are you sure you wish to delete the following?</p>
+                  <label>ID:</label> 1
+                    <label> Name: </label> Tomato Soup
+                    
+            </fieldset>
+            <input class="btn" type="submit" id="DeleteRecipe" value="Delete Recipe">
+                  <input class="btn" type="button" value="cancel" >
+          </form> 
+        </div><!-- delete -->
+</body>
+</html>

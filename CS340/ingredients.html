@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Recipes Database</title>
+    <meta />
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <h1> Ingredients </h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="users.html">Users</a>
+        <a href="recipes.html">Recipes</a>
+        <a href="ingredients.html">Ingredients</a>
+        <a href="dietaryRestrictions.html">Dietary Restrictions</a>
+        <a href="userRecipes.html">User Recipes</a>
+        <a href="recipeIngredients.html">Recipe Ingredients</a>
+    </nav>
+    <div id="browse" style="display: block">
+        <p><strong>Browse Ingredients</strong></p>
+        <table border="1" cellpadding="5">
+          <tr>
+            <th><a href="#">New</a></th>
+            <th></th>
+            <th>ingredientId</th>
+            <th>price</th>
+            <th>name</th>
+          </tr>
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >1</td>
+            <td align="right" >1</td>
+            <td >Tomatoes</td>
+          </tr>
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >2</td>
+            <td align="right" >2</td>
+            <td >Chicken</td>
+          </tr>          
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >3</td>
+            <td align="right" >1</td>
+            <td >Lettuce</td>
+          </tr>          
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >4</td>
+            <td align="right" >3</td>
+            <td >Vegan Cheese</td>
+          </tr>          
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >5</td>
+            <td align="right" >1</td>
+            <td >Gluten-free Noodles</td>
+          </tr>
+        </table>
+        <p>&nbsp;</p>
+        </div> <!-- browse -->
+        <div id="insert" style="display: block">
+            <form id="addIngredient">
+                <legend><strong>Add Ingredient</strong></legend>
+                  <fieldset class="fields">
+                    <label> Price </label> <input type="text" name="price">
+                    <label> Name </label> <input type="text" name="name">
+                  </fieldset>
+                  <input class="btn" type="submit" id="addIngredient" value="Add an Ingredient">
+                  <input class="btn" type="button" value="cancel">
+            </form> <!--add new ingredient-->
+        </div><!-- insert -->
+        
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+          <form id="updateIngredient">
+              <legend><strong>Update Ingredient</strong></legend>
+                  <fieldset class="fields">
+                  <label>ID:</label> 1
+                    <label> Price </label> <input type="text" name="price" value="1">
+                    <label> Name </label> <input type="text" name="name" value="Tomatoes">
+            </fieldset>
+            <input class="btn" type="submit" id="UpdateSaveIngredient" value="Save Update Ingredient">
+                  <input class="btn" type="button" value="cancel" >
+          </form> 
+        </div><!-- update -->
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+          <form id="deleteIngredient">
+              <legend><strong>Delete Ingredient</strong></legend>
+                  <fieldset class="fields">
+                  <p>Are you sure you wish to delete the following?</p>
+                  <label>ID:</label> 1
+                    <label> Name: </label> Tomatoes
+                    
+            </fieldset>
+            <input class="btn" type="submit" id="DeleteIngredient" value="Delete Ingredient">
+                  <input class="btn" type="button" value="cancel" >
+          </form> 
+        </div><!-- delete -->
+</body>
+</html>
