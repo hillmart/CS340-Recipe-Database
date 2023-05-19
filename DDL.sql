@@ -20,7 +20,7 @@ CREATE OR REPLACE TABLE users(
     email varchar(255) NOT NULL,
     restrictionID int(11),
     PRIMARY KEY (userID),
-    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID)
+    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE TABLE recipes(
@@ -29,7 +29,7 @@ CREATE OR REPLACE TABLE recipes(
     servings int(11) NOT NULL,
     restrictionID int(11),
     PRIMARY KEY (recipeID),
-    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID)
+    FOREIGN KEY (restrictionID) REFERENCES dietaryRestrictions(restrictionID) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE TABLE userRecipes(
@@ -37,8 +37,8 @@ CREATE OR REPLACE TABLE userRecipes(
   recipeID int(11) NOT NULL,
   dateAdded DATE NOT NULL,
   PRIMARY KEY (userID, recipeID),
-  FOREIGN KEY (userID) REFERENCES users(userID),
-  FOREIGN KEY (recipeID) REFERENCES recipes(recipeID)
+  FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE,
+  FOREIGN KEY (recipeID) REFERENCES recipes(recipeID) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE TABLE recipeIngredients(
@@ -47,8 +47,8 @@ CREATE OR REPLACE TABLE recipeIngredients(
   quantity int(11) NOT NULL,
   units varchar(255) NOT NULL,
   PRIMARY KEY (ingredientID, recipeID),
-  FOREIGN KEY (ingredientID) REFERENCES ingredients(ingredientID),
-  FOREIGN KEY (recipeID) REFERENCES recipes(recipeID)
+  FOREIGN KEY (ingredientID) REFERENCES ingredients(ingredientID) ON DELETE CASCADE,
+  FOREIGN KEY (recipeID) REFERENCES recipes(recipeID) ON DELETE CASCADE
 );
 
 -- Queries to insert data
