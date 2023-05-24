@@ -1,0 +1,49 @@
+<!-- albums.hbs -->
+
+<h2><a href="/">Back to Artists</a></h2>
+<h2>{{artist.[0].first_name}} {{artist.[0].last_name}} (AKA {{artist.[0].stage_name}})</h2>
+
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- Print the album attributes --}}
+        <tr>
+
+            {{#each albums.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+        {{#each albums}}
+        <tr>
+            <td>{{this.album_id}}</td>
+            <td>{{this.album_name}}</td>
+            <td>{{this.release_date}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Form to add a record to the table  --}}
+<p>To add an album, enter its information below and click "Submit".</p>
+<form id="add-album-form" method="POST" action="/add_new_album/{{artist.[0].artist_id}}">
+    <fieldset>
+        <legend class="required-field">Album</legend>
+        <label for="input-album_name">Title </label>
+        <input type="text" name="input-album_name" id="input-album_name">
+        <label for="input-release_date">Release Date </label>
+        <input type="date" name="input-release_date" id="input-release_date">
+    </fieldset>
+    <br/>
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript validation script --}}
+<script src="../js/input_validation.js"></script>

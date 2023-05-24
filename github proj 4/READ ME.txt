@@ -1,0 +1,9 @@
+READ ME
+
+In command line run npm install
+Might also have to call that on express, node, and express handlebars
+
+nvm install 14.17.0
+
+Node app.js
+

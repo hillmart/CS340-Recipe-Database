@@ -1,0 +1,82 @@
+<!-- artists.hbs -->
+
+{{!-- Create a table --}}
+
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell (these are the attribute names) --}}
+        <tr>
+            {{#each users.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>
+                Recipes
+            </th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+        {{#each users}}
+        <tr>
+            <td>{{this.user_ID}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.restriction}}</td>
+            <td><a href="/recipes/{{this.user_ID}}">See Recipes</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add new artists here</h2>
+<p>To add an artist, enter their information below and click "Submit".</p>
+<form id="add-artist-form" method="POST" action="/add_new_artist" onsubmit="return validateArtistForm()">
+    <fieldset>
+        <legend class="required-field">Name:</legend>
+        <label for="input-first_name">First </label>
+        <input type="text" name="input-first_name" id="input-first_name">
+        <label for="input-last_name">Last </label>
+        <input type="text" name="input-last_name" id="input-last_name">
+        or
+        <label for="input-stage_name">Stage Name </label>
+        <input type="text" name="input-stage_name" id="input-stage_name">
+    </fieldset>
+    <br/>
+    <fieldset>
+        <legend>Additional Info:</legend>
+        <label for="input-birthdate">Birthdate </label>
+        <input type="date" name="input-birthdate" id="input-birthdate">
+        <label for="input-instrument" class="required-field">Instrument </label>
+        <select name="input-instrument" id="input-instrument">
+            {{#each instruments}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <label for="input-primary_genre">Primary Genre </label>
+        <select name="input-primary_genre" id="input-primary_genre">
+            <option value="NULL"></option>
+            {{#each genres}}
+            <option value="{{this.genre_id}}">{{this.genre_name}}</option>
+            {{/each}}
+        </select>
+    </fieldset>
+
+    <input type="submit">
+</form>
+
+{{!-- Form to add a genre to the table  --}}
+<h2>Don't see a dietary restriction? Add it here!</h2>
+<form id="add-restriction-form" method="POST" action="/add_new_restriction" onsubmit="return validateGenreForm()">
+    <label for="input-restriction_name">Dietary Restriction Name </label>
+    <input type="text" name="input-restriction_name" id="input-restriction_name">
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript validation script --}}
+<script src="../js/input_validation.js"></script>
