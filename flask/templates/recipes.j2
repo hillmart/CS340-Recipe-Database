@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Recipes Database</title>
+    <meta />
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <h1> Recipes</h1>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a> |
+      <a href="{{ url_for('users') }}">Users</a> |
+      <a href="{{ url_for('recipes') }}">Recipes</a> |
+      <a href="{{ url_for('ingredients') }}">Ingredients</a> | 
+      <a href="{{ url_for('dietaryRestrictions') }}">Dietary Restrictions</a> |
+      <a href="{{ url_for('userRecipes') }}">User Recipes</a> |
+      <a href="{{ url_for('recipeIngredients') }}">Recipe Ingredients</a>
+    </nav>
+    <div id="browse" style="display: block">
+        <p><strong>Browse Recipes</strong></p>
+        <table border="1" cellpadding="5">
+          <tr>
+            <th><a href="#">New</a></th>
+            <th></th>
+            <th>recipeId</th>
+            <th>name</th>
+            <th>servings</th>
+            <th>restrictionId</th>
+          </tr>
+          {% for recipe in recipes %}
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right" >{{ recipe.recipeID }}</td>
+            <td >{{ recipe.name }}</td>
+            <td align="right" >{{ recipe.servings }}</td>
+            <td align="right" >{{ recipe.restrictionID }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <p>&nbsp;</p>
+        </div> <!-- browse -->
+        <div id="search" style="display: block">
+            <form id="searchForm">
+              <label for="searchTitle">Title:</label>
+              <input type="text" id="searchTitle" name="searchTitle">
+              <input class="btn" type="submit" id="searchButton" value="Search">
+            </form>
+        </div>
+        <p><strong>Browse Recipes</strong></p>
+        <div id="insert" style="display: block">
+            <form id="addRecipe">
+                <legend><strong>Add Recipe</strong></legend>
+                  <fieldset class="fields">
+                    <label> Name </label> <input type="text" name="name">
+                    <label> Servings </label> <input type="text" name="servings">
+                    <label for="restriction">Dietary restriction </label> 
+                    <select name="restriction">
+                        <option value="">No restriction</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Gluten Free">Gluten Free</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+                  </fieldset>
+                  <input class="btn" type="submit" id="addRecipe" value="Add a Recipe">
+                  <input class="btn" type="button" value="cancel">
+            </form> <!--add new recipe-->
+        </div><!-- insert -->
+        
+        <p>&nbsp
