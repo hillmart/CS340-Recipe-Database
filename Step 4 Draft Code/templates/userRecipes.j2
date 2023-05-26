@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Recipes Database</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <h1> User Recipes</h1>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a> |
+      <a href="{{ url_for('users') }}">Users</a> |
+      <a href="{{ url_for('recipes') }}">Recipes</a> |
+      <a href="{{ url_for('ingredients') }}">Ingredients</a> | 
+      <a href="{{ url_for('dietaryRestrictions') }}">Dietary Restrictions</a> |
+      <a href="{{ url_for('userRecipes') }}">User Recipes</a> |
+      <a href="{{ url_for('recipeIngredients') }}">Recipe Ingredients</a>
+    </nav>
+    <div id="browse" style="display: block">
+        <p><strong>Browse User Recipes</strong></p>
+        <table border="1" cellpadding="5">
+          <tr>
+            <th><a href="#">New</a></th>
+            <th></th>
+            <th>userId</th>
+            <th>recipeId</th>
+            <th>dateAdded</th>
+          </tr>
+          {% for user_recipe in userRecipes %}
+          <tr>
+            <td><a href="#">Edit</a></td>
+            <td><a href="#">Delete</a></td>
+            <td align="right">{{ user_recipe.userID }}</td>
+            <td align="right">{{ user_recipe.recipeID }}</td>
+            <td>{{ user_recipe.dateAdded }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <p>&nbsp;</p>
+        </div> <!-- browse -->
+        <div id="insert" style="display: block">
+            <form id="addUserRecipe">
+                <legend><strong>Add User Recipe</strong></legend>
+                  <fieldset class="fields">
+                    <label> userId </label> <input type="text" name="userId">
+                    <label> recipeId </label> <input type="text" name="recipeId">
+                    <label> dateAdded </label> <input type="text" name="dateAdded">
+                  </fieldset>
+                  <input class="btn" type="submit" id="addUserRecipe" value="Add a User Recipe">
+                  <input class="btn" type="button" value="cancel">
+            </form> <!--add new user recipe-->
+        </div><!-- insert -->
+        
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+          <form id="updateUserRecipe">
+              <legend><strong>Update User Recipe</strong></legend>
+                  <fieldset class="fields">
+                    <label> userId </label> <input type="text" name="userId" value="1">
+                    <label> recipeId </label> <input type="text" name="recipeId" value="1">
+                    <label> dateAdded </label> <input type="text" name="dateAdded" value="2023-04-01">
+            </fieldset>
+            <input class="btn" type="submit" id="UpdateSaveUserRecipe" value="Save Update User Recipe">
+                  <input class="btn" type="button" value="cancel" >
+          </form> 
+        </div><!-- update -->
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+          <form id="deleteUserRecipe">
+              <legend><strong>Delete User Recipe</strong></legend>
+                  <fieldset class="fields">
+                  <p>Are you sure you wish to delete the following?</p>
+                  <label>userId:</label> 1
+                  <label> recipeId: </label> 1
+            </fieldset>
+            <input class="btn" type="submit" id="DeleteUserRecipe" value="Delete User Recipe">
+                  <input class="btn" type="button" value="cancel" >
+          </form> 
+        </div><!-- delete -->
+</body>
+</html>
