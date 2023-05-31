@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Recipes Database</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+	<title>Users</title>
+
 </head>
-<body>
-    <h1> Users </h1>
+<p>&nbsp;</p>
+<body onload="browseUser()">
+	<h1>Users</h1>     
     <nav>
         <a href="{{ url_for('home') }}">Home</a> |
         <a href="{{ url_for('users') }}">Users</a> |
@@ -19,48 +16,56 @@
         <a href="{{ url_for('userRecipes') }}">User Recipes</a> |
         <a href="{{ url_for('recipeIngredients') }}">Recipe Ingredients</a>
     </nav>
-    <div id="browse" style="display: block">
-        <p><strong>Browse Users</strong></p>
+	
+    <div id="browse">
+		<p><strong>Browse Users</strong></p>
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#">New</a></th>
-                <th></th>
+                <th><a>Edit</a></th>
+                <th><a>Delete</a></th>
                 <th>userId</th>
                 <th>email</th>
                 <th>restrictionId</th>
             </tr>
             {% for user in users %}
             <tr>
-                <td><a href="#">Edit</a></td>
-                <td><a href="#">Delete</a></td>
+                <td><a href="edit_user/{{user.userID}}">Edit</a></td>
+                <td><a href="delete_user/{{user.userID}}" class="btn btn-default">Delete</a></td>
                 <td align="right">{{ user.userID }}</td>
                 <td>{{ user.email }}</td>
                 <td align="right">{{ user.restrictionID }}</td>
             </tr>
             {% endfor %}
-        </table>
-        <p>&nbsp;</p>
-    </div> <!-- browse -->
-    <div id="insert" style="display: block">
-        <form id="addUser">
-            <legend><strong>Add User</strong></legend>
-            <fieldset class="fields">
-                <label> Email </label> <input type="text" name="email">
-                <label for="restriction">Dietary restriction </label> 
-                <select name="restriction">
-                    <option value="">No restriction</option>
-                    <option value="Vegetarian">Vegetarian</option>
-                    <option value="Gluten Free">Gluten Free</option>
-                    <option value="Vegan">Vegan</option>
+        </table>   
+	<p>&nbsp;</p>
+	</div>	<!-- browse -->
+	
+	<div id="insert">
+		<!-- form to INSERT new data into bsg_people-->
+		<form id="insertUser" action="/users" method="post">
+			<legend><strong>Add User</strong></legend>
+			<fieldset>
+                <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
+				<label for="make">email:</label>
+				<input type="email" class="form-control" id="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" placeholder="" required>
+
+				<label for="restrictionID">dietary restriction:</label>
+                <select class="form-control" id="restrictionID" name="restrictionID" required>
+                    <option value="null">No restriction</option>
+                    {% for restriction in dietaryRestrictions %}
+                    <option value="{{ restriction.restrictionID }}">{{ restriction.name }}</option>
+                    {% endfor %}
                 </select>
+
             </fieldset>
-            <input class="btn" type="submit" id="addUser" value="Add a User">
-            <input class="btn" type="button" value="cancel">
-        </form> <!--add new planet-->
-    </div><!-- insert -->
-    
-    <p>&nbsp;</p>
-    <div id="update" style="display: block">
-      <form id="updateUser">
-          <legend><strong>Update User</strong></legend>
-             
+
+            <!-- Create 'Add User' and 'Cancel' buttons -->
+			<input type="submit" value="Add User" name="Add_User" class="btn btn-primary" style="margin:.5rem;">
+        </form>
+	</div><!--insert-->
+
+	
+	
+
+</body>
+</html>

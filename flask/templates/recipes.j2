@@ -6,8 +6,7 @@
     <title>Recipes Database</title>
     <meta />
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+
 </head>
 <body>
     <h1> Recipes</h1>
@@ -24,8 +23,8 @@
         <p><strong>Browse Recipes</strong></p>
         <table border="1" cellpadding="5">
           <tr>
-            <th><a href="#">New</a></th>
-            <th></th>
+            <th><a>Edit</a></th>
+            <th><a>Delete</a></th>
             <th>recipeId</th>
             <th>name</th>
             <th>servings</th>
@@ -33,8 +32,8 @@
           </tr>
           {% for recipe in recipes %}
           <tr>
-            <td><a href="#">Edit</a></td>
-            <td><a href="#">Delete</a></td>
+            <td><a href="edit_recipe/{{recipe.recipeID}}">Edit</a></td>
+            <td><a href="delete_recipe/{{recipe.recipeID}}" class="btn btn-default">Delete</a></td>
             <td align="right" >{{ recipe.recipeID }}</td>
             <td >{{ recipe.name }}</td>
             <td align="right" >{{ recipe.servings }}</td>
@@ -44,30 +43,29 @@
         </table>
         <p>&nbsp;</p>
         </div> <!-- browse -->
-        <div id="search" style="display: block">
+        <!-- <div id="search" style="display: block">
             <form id="searchForm">
               <label for="searchTitle">Title:</label>
               <input type="text" id="searchTitle" name="searchTitle">
               <input class="btn" type="submit" id="searchButton" value="Search">
             </form>
-        </div>
-        <p><strong>Browse Recipes</strong></p>
-        <div id="insert" style="display: block">
-            <form id="addRecipe">
-                <legend><strong>Add Recipe</strong></legend>
-                  <fieldset class="fields">
-                    <label> Name </label> <input type="text" name="name">
-                    <label> Servings </label> <input type="text" name="servings">
-                    <label for="restriction">Dietary restriction </label> 
-                    <select name="restriction">
-                        <option value="">No restriction</option>
-                        <option value="Vegetarian">Vegetarian</option>
-                        <option value="Gluten Free">Gluten Free</option>
-                        <option value="Vegan">Vegan</option>
-                    </select>
-                  </fieldset>
-                  <input class="btn" type="submit" id="addRecipe" value="Add a Recipe">
-                  <input class="btn" type="button" value="cancel">
+        </div> 
+        <p><strong>Browse Recipes</strong></p> -->
+        <div id="insert">
+            <form id="addRecipe" action="/recipes" method="post">
+              <legend><strong>Add Recipe</strong></legend>
+                <fieldset>
+                  <label> name </label> <input type="text" id="name" name="name">
+                  <label> servings </label> <input type="text" id="servings" name="servings">
+				          <label for="restrictionID">dietary restriction:</label>
+                  <select class="form-control" id="restrictionID" name="restrictionID" required>
+                      <option value="null">No restriction</option>
+                      {% for restriction in dietaryRestrictions %}
+                      <option value="{{ restriction.restrictionID }}">{{ restriction.name }}</option>
+                      {% endfor %}
+                  </select>
+                </fieldset>
+              <input type="submit" value="Add Recipe" name="Add_Recipe" class="btn btn-primary" style="margin:.5rem;">
             </form> <!--add new recipe-->
         </div><!-- insert -->
         
