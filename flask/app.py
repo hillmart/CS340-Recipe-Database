@@ -7,9 +7,9 @@ app = Flask(__name__)
 app.secret_key = "1234567890" 
 
 app.config['MYSQL_HOST'] = 'classmysql.engr.oregonstate.edu'
-app.config['MYSQL_USER'] = 'cs340_hillmart'
-app.config['MYSQL_PASSWORD'] = '7778' #last 4 of onid
-app.config['MYSQL_DB'] = 'cs340_hillmart'
+app.config['MYSQL_USER'] = 'cs340_baldesc'
+app.config['MYSQL_PASSWORD'] = '' #last 4 of onid
+app.config['MYSQL_DB'] = 'cs340_baldesc'
 app.config['MYSQL_CURSORCLASS'] = "DictCursor"
 
 
@@ -180,41 +180,196 @@ def delete_recipe(id):
 
     return redirect("/recipes")
 
-@app.route('/ingredients')
+@app.route('/ingredients', methods=["POST", "GET"])
 def ingredients():
-    # Establish a connection to the database
+    
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM ingredients")
+        ingredients = cur.fetchall()
+        return render_template('ingredients.j2', ingredients=ingredients)
+
+    if request.method == "POST":
+        if request.form.get("Add_Ingredient"):
+            name = request.form["name"]
+            price = request.form["price"]
+
+            query = "INSERT INTO ingredients (name, price) VALUES (%s, %s)"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (name, price))
+            mysql.connection.commit()
+
+        return redirect("/ingredients")
+
+@app.route('/edit_ingredient/<int:id>', methods=["POST","GET"])
+def edit_ingredient(id):
+    
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        query = "SELECT * FROM ingredients WHERE ingredientID = %s"
+        cur.execute(query, (id,))
+        data = cur.fetchone()
+
+        return render_template("editIngredients.j2", data=data)
+
+    if request.method == "POST":
+        if request.form.get("Edit_Ingredient"):
+            id = request.form["ingredientID"]
+            name = request.form["name"]
+            price = request.form["price"]
+
+            query = "UPDATE ingredients SET ingredients.name = %s, ingredients.price = %s WHERE ingredients.ingredientID = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (name, price, id))
+            mysql.connection.commit()
+
+            return redirect("/ingredients")
+
+@app.route("/delete_ingredient/<int:id>")
+def delete_ingredient(id):
+    query = "DELETE FROM ingredients WHERE ingredientID = '%s'"
     cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
 
-    # Execute a query to fetch user data from the database
-    cur.execute("SELECT * FROM ingredients")
-    ingredients = cur.fetchall()
+    return redirect("/ingredients")
 
-    # Render the .j2 template and pass the user data as a variable
-    return render_template('ingredients.j2', ingredients=ingredients)
 
-@app.route('/dietaryRestrictions')
+@app.route('/dietaryRestrictions',  methods=["POST", "GET"])
 def dietaryRestrictions():
-    # Establish a connection to the database
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM dietaryRestrictions")
+        restrictions = cur.fetchall()
+        return render_template('dietaryRestrictions.j2', restrictions=restrictions)
+
+    if request.method == "POST":
+        if request.form.get("Add_Dietary_Restrictions"):
+            name = request.form["name"]
+
+            query = "INSERT INTO dietaryRestrictions (name) VALUES (%s)"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (name,))
+            mysql.connection.commit()
+
+        return redirect("/dietaryRestrictions")
+    
+@app.route('/edit_restriction/<int:id>', methods=["POST","GET"])
+def edit_dietary_restrictions(id):
+    
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        query = "SELECT * FROM dietaryRestrictions WHERE restrictionID = %s"
+        cur.execute(query, (id,))
+        data = cur.fetchone()
+
+        return render_template("editDietaryRestrictions.j2", data=data)
+
+    if request.method == "POST":
+        if request.form.get("Edit_Dietary_Restrictions"):
+            id = request.form["restrictionID"]
+            name = request.form["name"]
+
+            query = "UPDATE dietaryRestrictions SET dietaryRestrictions.name = %s WHERE ingredients.ingredientID = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (name, id))
+            mysql.connection.commit()
+
+            return redirect("/dietaryRestrictions")
+        
+@app.route("/delete_restriction/<int:id>")
+def delete_restriction(id):
+    query = "DELETE FROM dietaryRestrictions WHERE restrictionID = '%s'"
     cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
 
-    # Execute a query to fetch user data from the database
-    cur.execute("SELECT * FROM dietaryRestrictions")
-    dietaryRestrictions = cur.fetchall()
+    return redirect("/dietaryRestrictions")
 
-    # Render the .j2 template and pass the user data as a variable
-    return render_template('dietaryRestrictions.j2', dietaryRestrictions=dietaryRestrictions)
-
-@app.route('/recipeIngredients')
+@app.route('/recipeIngredients', methods=["POST","GET"])
 def recipeIngredients():
-    # Establish a connection to the database
+    if request.method == "GET":
+        # Establish a connection to the database
+        cur = mysql.connection.cursor()
+
+        # Execute a query to fetch user data from the database
+        cur.execute("SELECT * FROM recipeIngredients")
+        recipeIngredients = cur.fetchall()
+
+        # Execute a query to fetch dietary restrictions from the database
+        cur.execute("SELECT ingredientID, name FROM ingredients")
+        ingredients = cur.fetchall()
+
+        cur.execute("SELECT recipeID, name FROM recipes")
+        recipes = cur.fetchall()
+
+        # Render the .j2 template and pass the user and dietary_restrictions data as variables
+        return render_template('recipeIngredients.j2', recipeIngredients=recipeIngredients, ingredients=ingredients, recipes=recipes)
+
+    if request.method == "POST":
+        if request.form.get("Add_Recipe_Ingredients"):
+            recipeID = request.form["recipeID"]
+            ingredientID = request.form["ingredientID"]
+            quantity = request.form["quantity"]
+            units = request.form["units"]
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM recipeIngredients WHERE ingredientID = %s AND recipeID = %s", (ingredientID, recipeID))
+            preexisting = cur.fetchall()
+            if preexisting:
+                flash("Combination already exists.","error")
+            else:
+                query = "INSERT INTO recipeIngredients (recipeID, ingredientID, quantity, units) VALUES (%s, %s, %s, %s)"
+                cur.execute(query, (recipeID, ingredientID, quantity, units))
+                mysql.connection.commit()
+
+        return redirect("/recipeIngredients")
+    
+@app.route("/edit_recipe_ingredient/<string:recipeIDs>", methods=["POST","GET"])
+def edit_recipe_ingredient(recipeIDs):
+    recipeID, ingredientID = recipeIDs.split(',')
+    if request.method == "GET":
+        # mySQL query to grab the info of the person with our passed id
+        query = "SELECT * FROM recipeIngredients WHERE ingredientID = %s AND recipeID = %s"
+        cur = mysql.connection.cursor()
+        cur.execute(query, (ingredientID, recipeID,))
+        data = cur.fetchone()
+
+        # Execute a query to fetch dietary restrictions from the database
+        cur.execute("SELECT ingredientID, name FROM ingredients")
+        ingredients = cur.fetchall()
+
+        cur.execute("SELECT recipeID, name FROM recipes")
+        recipes = cur.fetchall()
+
+        # render edit_people page passing our query data and homeworld data to the edit_people template
+        return render_template("editRecipeIngredients.j2", data=data, ingredients=ingredients, recipes=recipes)
+
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Person' button
+        if request.form.get("Edit_Ingredient_Recipe"):
+            # grab user form inputs
+            newIngredientID = request.form["ingredientID"]
+            newRecipeID = request.form["recipeID"]
+            quantity = request.form["quantity"]
+            units = request.form["units"]
+            cur = mysql.connection.cursor()
+            query = "DELETE FROM recipeIngredients WHERE ingredientID = %s AND recipeID = %s;" 
+            query2 = "INSERT INTO recipeIngredients (recipeID, ingredientID, quantity, units) VALUES (%s, %s, %s, %s)"
+            cur.execute(query, (ingredientID, recipeID))
+            mysql.connection.commit()
+            cur.execute(query2, (newRecipeID, newIngredientID, quantity, units))
+            mysql.connection.commit()
+            return redirect("/recipeIngredients")
+        
+def delete_recipe_ingredient(recipeIngredientIDs):
+    recipeID, ingredientID = recipeIngredientIDs.split(',')
+    query = "DELETE FROM recipeIngredients WHERE ingredientID = %s AND recipeID = %s"
     cur = mysql.connection.cursor()
+    cur.execute(query, (ingredientID, recipeID,))
+    mysql.connection.commit()
 
-    # Execute a query to fetch user data from the database
-    cur.execute("SELECT * FROM recipeIngredients")
-    recipeIngredients = cur.fetchall()
-
-    # Render the .j2 template and pass the user data as a variable
-    return render_template('recipeIngredients.j2', recipeIngredients=recipeIngredients)
+    return redirect("/recipeIngredients")
 
 @app.route('/userRecipes', methods=["POST", "GET"])
 def userRecipes():
@@ -304,8 +459,7 @@ def delete_user_recipe(userIDs):
 # Listener
 if __name__ == "__main__":
 
-    port = int(os.environ.get('PORT', 56305))
+    port = int(os.environ.get('PORT', 56302))
     #Start the app on port 56305, it will be different once hosted
-    app.run(debug=True, port=56305, host='0.0.0.0')
-    
+    app.run(debug=True, port=56302, host='0.0.0.0')
     

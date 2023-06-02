@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Recipes Database</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <title>Recipe Ingredients</title>
 </head>
 <body>
-    <h1> Recipe Ingredients</h1>
+    <h1>Recipe Ingredients</h1>
     <nav>
         <a href="{{ url_for('home') }}">Home</a> |
         <a href="{{ url_for('users') }}">Users</a> |
@@ -19,12 +14,12 @@
         <a href="{{ url_for('userRecipes') }}">User Recipes</a> |
         <a href="{{ url_for('recipeIngredients') }}">Recipe Ingredients</a>
     </nav>
-    <div id="browse" style="display: block">
+    <div id="browse">
         <p><strong>Browse Recipe Ingredients</strong></p>
         <table border="1" cellpadding="5">
             <tr>
-                <th><a href="#">New</a></th>
-                <th></th>
+                <th><a>Edit</a></th>
+                <th><a>Delete</a></th>
                 <th>recipeId</th>
                 <th>ingredientId</th>
                 <th>quantity</th>
@@ -32,8 +27,8 @@
             </tr>
             {% for ingredient in recipeIngredients %}
             <tr>
-                <td><a href="#">Edit</a></td>
-                <td><a href="#">Delete</a></td>
+                <td><a href="edit_recipe_ingredient/{{ingredient.recipeID}},{{ingredient.ingredientID}}">Edit</a></td>
+                <td><a href="delete_recipe_ingredient/{{ingredient.recipeID}},{{ingredient.ingredientID}}" class="btn btn-default">Delete</a></td>
                 <td align="right">{{ ingredient.recipeID }}</td>
                 <td align="right">{{ ingredient.ingredientID }}</td>
                 <td align="right">{{ ingredient.quantity }}</td>
@@ -41,49 +36,40 @@
             </tr>
             {% endfor %}
         </table>
-        <p>&nbsp;</p>
-    </div> <!-- browse -->
-    <div id="insert" style="display: block">
-        <form id="addRecipeIngredient">
+    </div><!-- browse -->
+    <p>&nbsp;</p>
+    <div id="insert">
+        <form id="addRecipeIngredient" action="/recipeIngredients" method="post">
             <legend><strong>Add Recipe Ingredient</strong></legend>
-            <fieldset class="fields">
-                <label> recipeId </label> <input type="text" name="recipeId">
-                <label> ingredientId </label> <input type="text" name="ingredientId">
-                <label> quantity </label> <input type="text" name="quantity">
-                <label> units </label> <input type="text" name="units">
+            <fieldset>
+                <label for="recipeId"> recipe ID:</label>
+                <select class="form-control" id="recipeId" name="recipeId" required>
+                    {% for recipe in recipes %}
+                    <option value="{{ recipe.recipeID }}">{{ recipe.recipeID }}</option>
+                    {% endfor %}
+                </select>
+                <label for="ingredientId"> ingredient ID:</label>
+                <select class="form-control" id="ingredientId" name="ingredientId" required>
+                    {% for ingredient in ingredients %}
+                    <option value="{{ ingredient.ingredientID }}">{{ ingredient.ingredientID }}</option>
+                    {% endfor %}
+                </select>
+                <label for="quantity"> quantity:</label>
+                <input type="text" class="form-control" id="quantity" name="quantity" required>
+                <label for="units"> units:</label>
+                <input type="text" class="form-control" id="units" name="units" required>
             </fieldset>
-            <input class="btn" type="submit" id="addRecipeIngredient" value="Add a Recipe Ingredient">
-            <input class="btn" type="button" value="cancel">
-        </form> <!--add new user recipe-->
+            <input type="submit" value="Add Recipe Ingredient" name="Add_Recipe_Ingredient" class="btn btn-primary" style="margin:.5rem;">
+        </form>
     </div><!-- insert -->
-
-    <p>&nbsp;</p>
-    <div id="update" style="display: block">
-        <form id="updateRecipeIngredient">
-            <legend><strong>Update Recipe Ingredient</strong></legend>
-            <fieldset class="fields">
-                <label> recipeId </label> <input type="text" name="recipeId" value="1">
-                <label> ingredientId </label> <input type="text" name="ingredientId" value="1">
-                <label> quantity </label> <input type="text" name="quantity" value="4">
-                <label> units </label> <input type="text" name="units" value="cups">
-            </fieldset>
-            <input class="btn" type="submit" id="UpdateSaveRecipeIngredient" value="Save Update Recipe Ingredient">
-            <input class="btn" type="button" value="cancel" >
-        </form> 
-    </div><!-- update -->
-
-    <p>&nbsp;</p>
-    <div id="delete" style="display: block">
-        <form id="deleteRecipeIngredient">
-            <legend><strong>Delete Recipe Ingredient</strong></legend>
-            <fieldset class="fields">
-                <p>Are you sure you wish to delete the following?</p>
-                <label>recipeId:</label> 1
-                <label> ingredientId: </label> 1
-            </fieldset>
-            <input class="btn" type="submit" id="DeleteRecipeIngredient" value="Delete Recipe Ingredient">
-            <input class="btn" type="button" value="cancel" >
-        </form> 
-    </div><!-- delete -->
- </body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</body>
 </html>
