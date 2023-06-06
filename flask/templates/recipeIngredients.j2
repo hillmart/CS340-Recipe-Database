@@ -42,14 +42,14 @@
         <form id="addRecipeIngredient" action="/recipeIngredients" method="post">
             <legend><strong>Add Recipe Ingredient</strong></legend>
             <fieldset>
-                <label for="recipeId"> recipe ID:</label>
-                <select class="form-control" id="recipeId" name="recipeId" required>
+                <label for="recipeID"> recipe ID:</label>
+                <select class="form-control" id="recipeID" name="recipeID" required>
                     {% for recipe in recipes %}
                     <option value="{{ recipe.recipeID }}">{{ recipe.recipeID }}</option>
                     {% endfor %}
                 </select>
-                <label for="ingredientId"> ingredient ID:</label>
-                <select class="form-control" id="ingredientId" name="ingredientId" required>
+                <label for="ingredientID"> ingredient ID:</label>
+                <select class="form-control" id="ingredientID" name="ingredientID" required>
                     {% for ingredient in ingredients %}
                     <option value="{{ ingredient.ingredientID }}">{{ ingredient.ingredientID }}</option>
                     {% endfor %}
@@ -59,7 +59,7 @@
                 <label for="units"> units:</label>
                 <input type="text" class="form-control" id="units" name="units" required>
             </fieldset>
-            <input type="submit" value="Add Recipe Ingredient" name="Add_Recipe_Ingredient" class="btn btn-primary" style="margin:.5rem;">
+            <input type="submit" value="Add Recipe Ingredient" name="Add_Recipe_Ingredients" class="btn btn-primary" style="margin:.5rem;">
         </form>
     </div><!-- insert -->
     {% with messages = get_flashed_messages() %}

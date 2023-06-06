@@ -12,13 +12,12 @@
     <nav>
         <a href="{{ url_for('home') }}">Home</a> |
         <a href="{{ url_for('users') }}">Users</a> |
-        <a href="{{ url_for('ingredients') }}">Ingredients</a> |
         <a href="{{ url_for('recipes') }}">Recipes</a> |
+        <a href="{{ url_for('ingredients') }}">Ingredients</a> | 
         <a href="{{ url_for('dietaryRestrictions') }}">Dietary Restrictions</a> |
-        <a href="{{ url_for('userIngredients') }}">User Ingredients</a> |
+        <a href="{{ url_for('userRecipes') }}">User Recipes</a> |
         <a href="{{ url_for('recipeIngredients') }}">Recipe Ingredients</a>
     </nav>
-	
     <div id="browse" style="display: block">
 		<p><strong>Browse Dietary Restrictions</strong></p>
         <table border="1" cellpadding="5">
@@ -28,9 +27,9 @@
                 <th>restrictionID</th>
                 <th>name</th>
             </tr>
-            {% for restriction in dietaryRestrictions %}
+            {% for restriction in restrictions %}
             <tr>
-                <td><a href="edit_restriction/{{restriction.restrictionID}}">Edit</a></td>
+                <td><a href="edit_dietary_restriction/{{restriction.restrictionID}}">Edit</a></td>
                 <td><a href="delete_restriction/{{restriction.restrictionID}}" class="btn btn-default">Delete</a></td>
                 <td align="right">{{ restriction.restrictionID }}</td>
                 <td align="right">{{ restriction.name }}</td>
@@ -44,7 +43,7 @@
             <fieldset>
               <label> Name </label> <input type="text" id="name" name="name">
             </fieldset>
-          <input type="submit" value="Add Dietary Restriction" name="Add_Dietary_Restriction" class="btn btn-primary" style="margin:.5rem;">
+          <input type="submit" value="Add Dietary Restriction" name="Add_Dietary_Restrictions" class="btn btn-primary" style="margin:.5rem;">
         </form> <!--add new dietary restriction-->
     </div><!-- insert -->
 
