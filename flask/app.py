@@ -7,9 +7,9 @@ app = Flask(__name__)
 app.secret_key = "1234567890" 
 
 app.config['MYSQL_HOST'] = 'classmysql.engr.oregonstate.edu'
-app.config['MYSQL_USER'] = 'cs340_baldesc'
-app.config['MYSQL_PASSWORD'] = '' #last 4 of onid
-app.config['MYSQL_DB'] = 'cs340_baldesc'
+app.config['MYSQL_USER'] = 'cs340_hillmart'
+app.config['MYSQL_PASSWORD'] = '7778' #last 4 of onid
+app.config['MYSQL_DB'] = 'cs340_hillmart'
 app.config['MYSQL_CURSORCLASS'] = "DictCursor"
 
 
@@ -181,8 +181,7 @@ def delete_recipe(id):
     return redirect("/recipes")
 
 @app.route('/ingredients', methods=["POST", "GET"])
-def ingredients():
-    
+def ingredients(): 
     if request.method == "GET":
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM ingredients")
@@ -203,7 +202,6 @@ def ingredients():
 
 @app.route('/edit_ingredient/<int:id>', methods=["POST","GET"])
 def edit_ingredient(id):
-    
     if request.method == "GET":
         cur = mysql.connection.cursor()
         query = "SELECT * FROM ingredients WHERE ingredientID = %s"
@@ -254,8 +252,8 @@ def dietaryRestrictions():
 
         return redirect("/dietaryRestrictions")
     
-@app.route('/edit_restriction/<int:id>', methods=["POST","GET"])
-def edit_dietary_restrictions(id):
+@app.route('/edit_dietary_restriction/<int:id>', methods=["POST","GET"])
+def edit_dietary_restriction(id):
     
     if request.method == "GET":
         cur = mysql.connection.cursor()
@@ -270,7 +268,7 @@ def edit_dietary_restrictions(id):
             id = request.form["restrictionID"]
             name = request.form["name"]
 
-            query = "UPDATE dietaryRestrictions SET dietaryRestrictions.name = %s WHERE ingredients.ingredientID = %s"
+            query = "UPDATE dietaryRestrictions SET dietaryRestrictions.name = %s WHERE dietaryRestrictions.restrictionID = %s"
             cur = mysql.connection.cursor()
             cur.execute(query, (name, id))
             mysql.connection.commit()
@@ -313,7 +311,7 @@ def recipeIngredients():
             quantity = request.form["quantity"]
             units = request.form["units"]
             cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM recipeIngredients WHERE ingredientID = %s AND recipeID = %s", (ingredientID, recipeID))
+            cur.execute("SELECT * FROM recipeIngredients WHERE recipeIngredients.ingredientID = %s AND recipeIngredients.recipeID = %s", (ingredientID, recipeID))
             preexisting = cur.fetchall()
             if preexisting:
                 flash("Combination already exists.","error")
@@ -361,7 +359,8 @@ def edit_recipe_ingredient(recipeIDs):
             cur.execute(query2, (newRecipeID, newIngredientID, quantity, units))
             mysql.connection.commit()
             return redirect("/recipeIngredients")
-        
+
+@app.route("/delete_recipe_ingredient/<string:recipeIngredientIDs>")       
 def delete_recipe_ingredient(recipeIngredientIDs):
     recipeID, ingredientID = recipeIngredientIDs.split(',')
     query = "DELETE FROM recipeIngredients WHERE ingredientID = %s AND recipeID = %s"
@@ -462,4 +461,3 @@ if __name__ == "__main__":
     port = int(os.environ.get('PORT', 56302))
     #Start the app on port 56305, it will be different once hosted
     app.run(debug=True, port=56302, host='0.0.0.0')
-    
