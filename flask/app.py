@@ -100,8 +100,6 @@ def delete_user(id):
 
     return redirect("/users")
 
-# ... existing imports ...
-
 @app.route('/search_users', methods=['GET'])
 def search_users():
     # Fetch the search query
@@ -119,6 +117,7 @@ def search_users():
     # Execute a query to fetch dietary restrictions from the database
     cur.execute("SELECT restrictionID, name FROM dietaryRestrictions")
     dietary_restrictions = cur.fetchall()
+    
     return render_template('users.j2', users=users, dietaryRestrictions=dietary_restrictions)
 
 @app.route('/recipes', methods=["POST", "GET"])
