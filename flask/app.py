@@ -7,9 +7,9 @@ app = Flask(__name__)
 app.secret_key = "1234567890" 
 
 app.config['MYSQL_HOST'] = 'classmysql.engr.oregonstate.edu'
-app.config['MYSQL_USER'] = 'cs340_hillmart'
-app.config['MYSQL_PASSWORD'] = '7778' #last 4 of onid
-app.config['MYSQL_DB'] = 'cs340_hillmart'
+app.config['MYSQL_USER'] = 'cs340_'
+app.config['MYSQL_PASSWORD'] = '' #last 4 of onid
+app.config['MYSQL_DB'] = 'cs340_'
 app.config['MYSQL_CURSORCLASS'] = "DictCursor"
 
 
@@ -53,7 +53,7 @@ def users():
             mysql.connection.commit()
 
         return redirect("/users")
-
+    
 @app.route('/edit_user/<int:id>', methods=["POST","GET"])
 def edit_user(id):
     if request.method == "GET":
@@ -99,6 +99,27 @@ def delete_user(id):
     mysql.connection.commit()
 
     return redirect("/users")
+
+# ... existing imports ...
+
+@app.route('/search_users', methods=['GET'])
+def search_users():
+    # Fetch the search query
+    query = request.args.get('q')
+
+    # Establish a connection to the database
+    cur = mysql.connection.cursor()
+
+    # Execute a search query in the database
+    cur.execute("SELECT users.userID, email, users.restrictionID FROM users WHERE email LIKE %s", ('%' + query + '%',))
+
+    # Fetch the results
+    users = cur.fetchall()
+
+    # Execute a query to fetch dietary restrictions from the database
+    cur.execute("SELECT restrictionID, name FROM dietaryRestrictions")
+    dietary_restrictions = cur.fetchall()
+    return render_template('users.j2', users=users, dietaryRestrictions=dietary_restrictions)
 
 @app.route('/recipes', methods=["POST", "GET"])
 def recipes():
@@ -458,6 +479,6 @@ def delete_user_recipe(userIDs):
 # Listener
 if __name__ == "__main__":
 
-    port = int(os.environ.get('PORT', 56302))
+    port = int(os.environ.get('PORT', 56301))
     #Start the app on port 56305, it will be different once hosted
-    app.run(debug=True, port=56302, host='0.0.0.0')
+    app.run(debug=True, port=56301, host='0.0.0.0')
